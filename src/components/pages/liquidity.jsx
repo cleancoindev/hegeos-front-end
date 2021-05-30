@@ -169,9 +169,9 @@ function Liquidity(props) {
                 </p>
                 {/*(<Link to={pjson.homepage+"/faq"}>How Hegios.io works?</Link>)*/}
             </div>
-            <div className="col-md-5">
+            { /* (<div className="col-md-5">
                 <img src={pjson.homepage+"/images/benefits-6.png"} className="w-100" />
-            </div>
+            </div>) */ }
 
             { /* (<div className="col-md-12">
                 <h2>EARN YIELD ON {liquidityData.currency} AS A LIQUIDITY PROVIDER</h2>
