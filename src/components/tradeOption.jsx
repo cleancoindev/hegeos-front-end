@@ -51,7 +51,7 @@ export default class TradeOption extends Component {
     schema = {
         currency: Joi.string().required().label('Currency'),
         option: Joi.string().required().label('Trade Option'),
-        optionSize: Joi.number().required().label('Option Size'),
+        optionSize: Joi.number().min(parseFloat(process.env.REACT_APP_MIN_OPTION_SIZE || 0)).required().label('Option Size'),
         strikePrice: Joi.number().required().label('Strike Price'),
         holdingPeriod: Joi.required().label('Holding Period'),
     };
@@ -354,7 +354,7 @@ export default class TradeOption extends Component {
                                             name="optionSize"
                                             id="optionSize"
                                             className="form-control"
-                                            placeholder="1"
+                                            placeholder={parseFloat(process.env.REACT_APP_MIN_OPTION_SIZE || 1)}
                                             aria-label="EOS"
                                             value={tradeOption.optionSize}
                                             onChange={this.handleChange}

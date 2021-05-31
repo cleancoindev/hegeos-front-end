@@ -385,8 +385,10 @@ class EosService {
         //const transferAmount = parseFloat(a[0]) * marketPrice; // ???
         //console.log('amount:', amount, 'marketPrice:', marketPrice, 'transferAmount:', transferAmount);
         console.log('fee:', fee);
+        const fee_ex = fee * 1.01;
+        console.log('fee + 1%:', fee_ex);
         return EosService.optionCreate(amount, strike, period, optiontype, 
-            '6,'+currency, fee.toFixed(6)+' '+currency);
+            '6,'+currency, fee_ex.toFixed(6)+' '+currency);
     }
 
     static optionCreateUSDC(amount, strike, period, optiontype, fee) {

@@ -261,13 +261,6 @@ function Liquidity(props) {
             {props.isLoggedIn() && (
                 <div className="col-md-12">
                     <h2>PROVIDE LIQUIDITY</h2>
-                    <p>
-                        <CurrencyBalance
-                            getBalance={getBalance}
-                            currency='EOS'
-                            refresh={refreshBalance}
-                            handleError={handleError} />
-                    </p>
                     <hr />
                     <div className=" boxStyle p-4">
                         <div className="callout callout-even small">
@@ -295,6 +288,13 @@ function Liquidity(props) {
                                         EOS
                                     </span>
                                 </div>
+                                <p>
+                                    <CurrencyBalance
+                                        getBalance={getBalance}
+                                        currency='EOS'
+                                        refresh={refreshBalance}
+                                        handleError={handleError} />
+                                </p>
                                 {errors.depositAmount && <div className="alert alert-danger">{errors.depositAmount}</div>}
                             </div>
                             <div className="col-sm-4 text-center with-arrow">
@@ -345,6 +345,13 @@ function Liquidity(props) {
                                         {process.env.REACT_APP_HEGEOS_SYMBOL}
                                     </span>
                                 </div>
+                                <p>
+                                    <CurrencyBalance
+                                        getBalance={getBalance}
+                                        currency={process.env.REACT_APP_HEGEOS_SYMBOL}
+                                        refresh={refreshBalance}
+                                        handleError={handleError} />
+                                </p>
                                 {errors.withdrawAmount && <div className="alert alert-danger">{errors.withdrawAmount}</div>}
                             </div>
                             <div className="col-sm-4 text-center with-arrow">
@@ -377,7 +384,10 @@ function Liquidity(props) {
                                     will be sent to your {liquidityData.currency} address.
                                 </p>
                             </div>
+                            {/*(
                             <hr />
+                            )*/}
+                            {/*(
                             <div className="row text-center">
                                 <div className="col-sm-4">
                                     <h3>TBA</h3>Avg. Returns (30 Days)
@@ -389,6 +399,7 @@ function Liquidity(props) {
                                     <h3>TBA</h3>Gross Premiums Earned by Writers
                                 </div>
                             </div>
+                            )*/}
                         </div>
                     </div>
                     <LiquidityPool 
