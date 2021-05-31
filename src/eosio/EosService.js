@@ -65,11 +65,12 @@ class EosService {
     static async getCurrencyBalance(currency) {
         return new Promise((resolve, reject) => {
             //console.log('endpoint:', process.env.REACT_APP_NODE_ENDPOINT);
-            //console.log('contract:', process.env.REACT_APP_LP_CONTRACT_NAME);
+            const contractName = currency === 'EOS' ? 'eosio.token' : process.env.REACT_APP_LP_CONTRACT_NAME;
+            //console.log('contract:', contractName);
             //console.log('currency:', currency);
             EosService.getBalance(
                 process.env.REACT_APP_NODE_ENDPOINT, 
-                process.env.REACT_APP_LP_CONTRACT_NAME,
+                contractName,
                 currency
             )
             .then(result => {
@@ -103,6 +104,22 @@ class EosService {
                 process.env.REACT_APP_NODE_ENDPOINT, 
                 process.env.REACT_APP_LP_CONTRACT_NAME,
                 'DAI'
+            )
+            .then(result => {
+                resolve(result);
+            })
+            .catch(err => {
+                reject(err);
+            });
+        });
+    }
+
+    static async getEOSBalance() {
+        return new Promise((resolve, reject) => {
+            EosService.getBalance(
+                process.env.REACT_APP_NODE_ENDPOINT, 
+                'eosio.token',
+                'EOS'
             )
             .then(result => {
                 resolve(result);

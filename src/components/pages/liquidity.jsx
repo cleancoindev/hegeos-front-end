@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import PieChart from '../pieChart';
 import Joi from 'joi-browser';
 import LiquidityPool from '../liquidityPool';
+import CurrencyBalance from '../currencyBalance';
 
 import EosService from '../../eosio/EosService';
 
@@ -23,6 +24,7 @@ function Liquidity(props) {
     const [errors, setErrors] = useState({});
     const [refreshPool, setRefreshPool] = useState(false);
     const [currentRate, setCurrentRate] = useState(1);
+    const [refreshBalance, setRefreshBalance] = useState(false);
 
     const sharePool = (share, poolSize) => {
         return (poolSize / share) * 100;
@@ -129,6 +131,15 @@ function Liquidity(props) {
     };
 
     const sharedPool = sharePool(liquidityData.poolSize, liquidityData.share);
+
+    const getBalance = (currency, callback) => {
+        EosService.getCurrencyBalance(currency)
+            .then(result => {
+                const balance = result[0];
+                callback(balance);
+            },
+            handleError);
+    }
 
     const getPoolStat = (callback) => {
         EosService.poolStat()
@@ -240,6 +251,13 @@ function Liquidity(props) {
             {props.isLoggedIn() && (
                 <div className="col-md-12">
                     <h2>PROVIDE LIQUIDITY</h2>
+                    <p>
+                        <CurrencyBalance
+                            getBalance={getBalance}
+                            currency='EOS'
+                            refresh={refreshBalance}
+                            handleError={handleError} />
+                    </p>
                     <hr />
                     <div className=" boxStyle p-4">
                         <div className="callout callout-even small">

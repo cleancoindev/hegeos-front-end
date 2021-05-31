@@ -17,7 +17,7 @@ export default function CurrencyBalance(props) {
 
     return (
         <div className='mt-2'>
-            Balance: {balance}
+            Your balance: {balance}
         </div>
     );
 }
