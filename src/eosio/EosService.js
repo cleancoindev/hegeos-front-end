@@ -250,7 +250,7 @@ class EosService {
             const dai_id = 12; //1239;
             const lower_bound = Math.min(usdc_id, dai_id);
             const upper_bound = Math.max(usdc_id, dai_id);
-            const limit = upper_bound + 1 - lower_bound;
+            const limit = upper_bound + 1 - lower_bound;            
             EosService.getEosTableRows(
                 'swap.defi',
                 'pairs',
@@ -265,10 +265,10 @@ class EosService {
                 result.rows.forEach(row => {
                     //console.log('row:', row);
                     if (row.id === dai_id) {
-                        price.dai = parseFloat(row.price1_last);
+                        price.dai = parseFloat(row.price0_last); //parseFloat(row.price1_last);
                     }
                     if (row.id === usdc_id) {
-                        price.usdc = parseFloat(row.price1_last);
+                        price.usdc = parseFloat(row.price0_last); //parseFloat(row.price1_last);
                     }
                 });
                 resolve(price);
