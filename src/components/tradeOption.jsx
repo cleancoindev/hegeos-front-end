@@ -56,6 +56,16 @@ export default class TradeOption extends Component {
         holdingPeriod: Joi.required().label('Holding Period'),
     };
 
+    updateTick = () => {
+        this.setState({
+            refreshOptionList: !this.state.refreshOptionList,
+            refreshBalance: !this.state.refreshBalance,
+        });
+        this.getMarketPrice();
+        //this.getCurrencyBalance();
+        this.getImpliedVolRate();
+    }
+
     componentDidMount() {
 
         let currentState = { ...this.state };
@@ -65,6 +75,12 @@ export default class TradeOption extends Component {
         this.getMarketPrice();
         //this.getCurrencyBalance();
         this.getImpliedVolRate();
+
+        this.updateInterval = setInterval(this.updateTick, 5000); //update every 5 seconds
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.updateInterval);   
     }
 
      getMarketPrice() {

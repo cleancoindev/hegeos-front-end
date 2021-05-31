@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import PieChart from '../pieChart';
 import Joi from 'joi-browser';
@@ -25,6 +25,7 @@ function Liquidity(props) {
     const [refreshPool, setRefreshPool] = useState(false);
     const [currentRate, setCurrentRate] = useState(1);
     const [refreshBalance, setRefreshBalance] = useState(false);
+    const [count, setCount] = useState(0);
 
     const sharePool = (share, poolSize) => {
         return (poolSize / share) * 100;
@@ -169,6 +170,15 @@ function Liquidity(props) {
             },
             handleError);
     }
+
+    useEffect(() => {
+        const updateInterval = setInterval(() => {
+            setRefreshPool(prev => !prev);
+            setRefreshBalance(prev => !prev);
+            setCount(prev => prev+1);
+        }, 5000); //update every 5 seconds
+        return () => clearInterval(updateInterval);
+    }, []);
 
     return (
         <div className="row">

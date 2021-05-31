@@ -246,23 +246,28 @@ class EosService {
 
     static usdPrice() {
         return new Promise((resolve, reject) => {
+            const usdc_id = 12; //1255;
+            const dai_id = 12; //1239;
+            const lower_bound = Math.min(usdc_id, dai_id);
+            const upper_bound = Math.max(usdc_id, dai_id);
+            const limit = upper_bound + 1 - lower_bound;
             EosService.getEosTableRows(
                 'swap.defi',
                 'pairs',
                 {
-                    lower_bound: 1239,
-                    upper_bound: 1255,
-                    limit: 20
+                    lower_bound,
+                    upper_bound,
+                    limit,
                 }
             )
             .then(result => {
                 let price = {};
                 result.rows.forEach(row => {
                     //console.log('row:', row);
-                    if (row.id === 1239) {
+                    if (row.id === dai_id) {
                         price.dai = parseFloat(row.price1_last);
                     }
-                    if (row.id === 1255) {
+                    if (row.id === usdc_id) {
                         price.usdc = parseFloat(row.price1_last);
                     }
                 });
