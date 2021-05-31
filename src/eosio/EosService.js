@@ -414,7 +414,7 @@ class EosService {
     }
 
     static optionExerciseEOS(optionid) {
-        return EosService.optionExercise(optionid, '4,DAI');
+        return EosService.optionExercise(optionid, '4,EOS');
     }
 
     static poolDeposit(amount, minmint) {
