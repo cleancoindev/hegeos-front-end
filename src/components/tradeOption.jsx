@@ -46,15 +46,18 @@ export default class TradeOption extends Component {
             previousPos: 0,
             newPos: 0,
         },
+        maxOptionSize: 0
     };
 
-    schema = {
-        currency: Joi.string().required().label('Currency'),
-        option: Joi.string().required().label('Trade Option'),
-        optionSize: Joi.number().min(parseFloat(process.env.REACT_APP_MIN_OPTION_SIZE || 0)).required().label('Option Size'),
-        strikePrice: Joi.number().required().label('Strike Price'),
-        holdingPeriod: Joi.required().label('Holding Period'),
-    };
+    schema = () => {
+        return {
+            currency: Joi.string().required().label('Currency'),
+            option: Joi.string().required().label('Trade Option'),
+            optionSize: Joi.number().min(parseFloat(process.env.REACT_APP_MIN_OPTION_SIZE || 0)).max(this.state.maxOptionSize).required().label('Option Size'),
+            strikePrice: Joi.number().required().label('Strike Price'),
+            holdingPeriod: Joi.required().label('Holding Period'),
+        }
+    }
 
     updateTick = () => {
         this.setState({
@@ -127,7 +130,7 @@ export default class TradeOption extends Component {
 
     validate = () => {
         const options = { abortEarly: false };
-        const { error } = Joi.validate(this.state.tradeOption, this.schema, options);
+        const { error } = Joi.validate(this.state.tradeOption, this.schema(), options);
 
         if (!error) return null;
 
@@ -255,7 +258,18 @@ export default class TradeOption extends Component {
         EosService.poolStat()
             .then(result => {
                 const poolStat = result.rows && result.rows[0];
-                this.setState({ poolStat });
+                let maxOptionSize = 0;
+                if (poolStat) {
+                    const totalDeposit = parseFloat(poolStat.totaldeposit.split(' ')[0]);
+                    const lockedAmount = parseFloat(poolStat.lockedamount.split(' ')[0]);
+                    const lockedPremium = parseFloat(poolStat.lockedpremium.split(' ')[0]);
+                    maxOptionSize = totalDeposit - lockedAmount - lockedPremium;
+                }
+                console.log('!!! maxOptionSize:', maxOptionSize);
+                this.setState({ 
+                    poolStat,
+                    maxOptionSize,
+                });
                 callback(poolStat);
             },
             this.handleError);
@@ -346,9 +360,9 @@ export default class TradeOption extends Component {
                                     {errors.option && <div className="alert alert-danger">{errors.option}</div>}
                                 </div>
                                 <div className="col-md-3">
-                                    <label className="form-label">Option Size: </label>
+                                    <label className="form-label label-default">Option Size:</label>
                                     <br />
-                                    <div className="input-group mb-3">
+                                    <div className="input-group mb-2">
                                         <input
                                             type="text"
                                             name="optionSize"
@@ -363,6 +377,7 @@ export default class TradeOption extends Component {
                                             EOS
                                         </span>
                                     </div>
+                                    <div class="mb-3">Max: {this.state.maxOptionSize || 0} EOS</div>
                                     {errors.optionSize && <div className="alert alert-danger">{errors.optionSize}</div>}
                                 </div>
                                 <div className="col-md-3">
