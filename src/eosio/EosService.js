@@ -296,14 +296,18 @@ class EosService {
         });
     }
 
-    static optionList(limit) {
+    static optionList(limit, topKey) {
         return new Promise((resolve, reject) => {
+            let req = {
+                reverse: true,
+                limit: (limit || 100)
+            }
+            if (topKey) {
+                req.upper_bound = topKey;
+            }
             EosService.getOptionTableRows(
                 'options',
-                {
-                    reverse: true,
-                    limit: (limit || 100)
-                }
+                req
             )
             .then(result => {
                 resolve(result);

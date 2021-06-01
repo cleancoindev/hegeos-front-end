@@ -6,20 +6,32 @@ import SelectCurrency from './selectCurrency';
 import EosService from '../eosio/EosService';
 
 function OptionContracts(props) {
-    const [viewLimit, setViewLimit] = useState(1000);
+    const [pageSize, setPageSize] = useState(100);
     const [key, setKey] = useState('active');
-    const [options, setOptions] = useState([]);
+    const [userOptions, setUserOptions] = useState([]);
     const [optionError, setOptionError] = useState({});
+
+    const pageRows = (result, prevRows, topKey) => {
+        console.log('options result:', result);
+        const rows = prevRows.concat(result.rows);
+        setUserOptions(rows.filter(row => {
+            return row.account === EosService.accountName() // && row.status === 'active'
+        }));
+        setOptionError({});
+        if (result.more) {
+            const nextKey = parseInt(result.next_key);
+            if (nextKey > 0 && (!topKey || nextKey < topKey)) {
+                EosService.optionList(pageSize, result.next_key)
+                    .then(result => pageRows(result, rows, nextKey),
+                    props.handleError);
+            }
+        }
+    }
 
     const load = () => {
         setOptionError({});
-        EosService.optionList(viewLimit)
-            .then(result => {
-                if (result.rows) {
-                    setOptions(result.rows);
-                }
-                setOptionError({});
-            },
+        EosService.optionList(pageSize)
+            .then(result => pageRows(result, []),
             props.handleError);
     }
 
@@ -59,9 +71,7 @@ function OptionContracts(props) {
                             </tr>
                         </thead>
                         <tbody>
-                            {options.filter(option => {
-                                return option.account === EosService.accountName() // && option.status === 'active'
-                            }).map(option => {
+                            {userOptions.map(option => {
                                 //console.log('option:', option);
                                 const expiration = Date.parse(option.expiration);
                                 //console.log('expiration:', expiration, 'now:', Date.now());
@@ -116,7 +126,7 @@ function OptionContracts(props) {
                             </tr>
                         </thead>
                         <tbody>
-                            {options.filter(option => {
+                            {userOptions.filter(option => {
                                 return option.account === EosService.accountName() && option.status !== 'active'
                             }).map(option => {
                                 return (<tr>
