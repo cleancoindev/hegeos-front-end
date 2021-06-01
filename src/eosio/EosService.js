@@ -226,9 +226,9 @@ class EosService {
             return EosService.ualActiveUser.accountName;
         }
         return
-            localStorage.getItem('name_account') && 
             localStorage.getItem('private_key') && 
-            localStorage.getItem('account_permission');
+            localStorage.getItem('account_permission') &&
+            localStorage.getItem('name_account');
     }
 
     static accountName() {
