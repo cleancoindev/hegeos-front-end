@@ -41,7 +41,9 @@ class HegeosApp extends React.Component {
 
   isLoggedIn = () => {
     //return this.wallet !== false;
-    return EosService.isLoggedIn(this.props);
+    const r = EosService.isLoggedIn(this.props);
+    console.log('isLoggedIn:', r);
+    return r;
   }
 
   attachWallet = (/* wallet */) => {
