@@ -15,7 +15,7 @@ export default function LiquidityPool(props) {
             const lockedAmount = poolStat && parseFloat(poolStat.lockedamount.split(' ')[0]);
             const rate = totalDeposit && (lockedAmount * 100 / totalDeposit).toFixed(2);
             setPoolStat(poolStat);
-            setAvailabilityMin(lockedAmount);
+            setAvailabilityMin(totalDeposit - lockedAmount);
             setAvailabilityMax(totalDeposit);
             setUtilizationRate(rate);
         });        
