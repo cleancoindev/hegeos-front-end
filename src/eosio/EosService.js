@@ -222,11 +222,13 @@ class EosService {
 
     static isLoggedIn(props) {
         EosService.ualActiveUser = props && props.ual && props.ual.activeUser;
-        return EosService.ualActiveUser || (
+        if (EosService.ualActiveUser) {
+            return EosService.ualActiveUser.accountName;
+        }
+        return
             localStorage.getItem('name_account') && 
             localStorage.getItem('private_key') && 
-            localStorage.getItem('account_permission')
-        );
+            localStorage.getItem('account_permission');
     }
 
     static accountName() {
