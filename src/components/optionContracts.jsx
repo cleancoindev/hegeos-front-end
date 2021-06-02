@@ -2,35 +2,47 @@ import React, { useState, useEffect } from 'react';
 import { Tabs, Tab } from 'react-bootstrap';
 //import Contracts from '../api/Contracts';
 import SelectCurrency from './selectCurrency';
+import OptionsPagination from './optionsPagination';
 
 import EosService from '../eosio/EosService';
 
 function OptionContracts(props) {
-    const [pageSize, setPageSize] = useState(100);
     const [key, setKey] = useState('active');
     const [userOptions, setUserOptions] = useState([]);
     const [optionError, setOptionError] = useState({});
+    const [currentPage, setCurrentPage] = useState(1);
+    const [optionsPerPage, setOptionsPerPage] = useState(10);
 
     const pageRows = (result, prevRows, topKey) => {
         console.log('options result:', result);
         const rows = prevRows.concat(result.rows);
-        setUserOptions(rows.filter(row => {
-            return row.account === EosService.accountName() // && row.status === 'active'
-        }));
-        setOptionError({});
+//        setUserOptions(rows.filter(row => {
+//            return row.account === EosService.accountName() // && row.status === 'active'
+//        }));
         if (result.more) {
             const nextKey = parseInt(result.next_key);
             if (nextKey > 0 && (!topKey || nextKey < topKey)) {
-                EosService.optionList(pageSize, result.next_key)
+                EosService.optionList(optionsPerPage, result.next_key)
                     .then(result => pageRows(result, rows, nextKey),
                     props.handleError);
+                return;
             }
         }
+        const userRows = rows.filter(row => {
+            return row.account === EosService.accountName() // && row.status === 'active'
+        });
+        if (currentPage > 1) {
+            const lastPage = Math.floor((userRows.length + optionsPerPage - 1) / optionsPerPage);
+            if (lastPage < currentPage) {
+                setCurrentPage(lastPage || 1);
+            }
+        }
+        setUserOptions(userRows);
     }
 
     const load = () => {
         setOptionError({});
-        EosService.optionList(pageSize)
+        EosService.optionList(optionsPerPage)
             .then(result => pageRows(result, []),
             props.handleError);
     }
@@ -52,6 +64,10 @@ function OptionContracts(props) {
         return () => {};
     }, [props.refresh]);
 
+    const indexOfLastOption = currentPage * optionsPerPage;
+    const indexOfFirstOption = indexOfLastOption - optionsPerPage;
+    const currentOptions = userOptions.slice(indexOfFirstOption, indexOfLastOption);
+
     return (
         <div className="liquidityPool boxStyle  p-4">
             <h2>YOUR OPTIONS CONTRACTS</h2>
@@ -71,7 +87,7 @@ function OptionContracts(props) {
                             </tr>
                         </thead>
                         <tbody>
-                            {userOptions.map(option => {
+                            {currentOptions.map(option => {
                                 //console.log('option:', option);
                                 const expiration = Date.parse(option.expiration);
                                 //console.log('expiration:', expiration, 'now:', Date.now());
@@ -111,6 +127,11 @@ function OptionContracts(props) {
                             })}
                         </tbody>
                     </table>
+                    <OptionsPagination 
+                        optionsPerPage={optionsPerPage} 
+                        totalOptions={userOptions.length} 
+                        paginate={setCurrentPage}
+                        />
                 </Tab>
                 {/*(<Tab eventKey="history" title="History">
                     <table className="table table-dark">
