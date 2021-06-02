@@ -200,7 +200,7 @@ function OptionContracts(props) {
                                         <td>{option.optiontype == '1' ? 'PUT' : 'CALL'}</td>
                                         <td>
                                             {option.status === 'active' && !expired && !priceTooLow && !priceTooHigh && (
-                                                (expired_1h && 
+                                                ((option.account === EosService.accountName() || expired_1h) && 
                                                     <SelectCurrency onSelectCurrency={({ type: currency }) => exercise(option.id, currency, setAllOptionError)} />
                                                 ) || option.status
                                             )}
