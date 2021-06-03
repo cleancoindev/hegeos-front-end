@@ -18,8 +18,8 @@ const OptionsPagination = ({ optionsPerPage, totalOptions, paginate, showExpired
                         </Button>
                     </li>
                 ))}
-                <label for="show-expire" style={{display: "inline-block", textAlign: "right", width: "100%"}}  onClick={onShowExpired}>
-                    <input id="show-expired" type="checkbox" checked={showExpired} /> Show Expired
+                <label for="show-expire" style={{display: "inline-block", textAlign: "right", width: "100%"}}>
+                    <input id="show-expired" type="checkbox" checked={showExpired} onClick={onShowExpired} /> <span onClick={onShowExpired}>Show Expired</span>
                 </label>
             </ul>                
         </nav>            
