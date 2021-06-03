@@ -367,7 +367,7 @@ function Liquidity(props) {
                                         placeholder="1"
                                         aria-label="EOS"
                                         readonly="true"
-                                        value={(withdrawAmount * currentRate).toFixed(2)}
+                                        value={(withdrawAmount / (currentRate || 1)).toFixed(2)}
                                     />
                                     <span className="input-group-text" id="basic-addon2">
                                         EOS
