@@ -377,7 +377,7 @@ export default class TradeOption extends Component {
                                             EOS
                                         </span>
                                     </div>
-                                    <div class="mb-3">Max: {this.state.maxOptionSize || 0} EOS</div>
+                                    <div class="mb-3">Max: {(this.state.maxOptionSize || 0).toFixed(4)} EOS</div>
                                     {errors.optionSize && <div className="alert alert-danger">{errors.optionSize}</div>}
                                 </div>
                                 <div className="col-md-3">
