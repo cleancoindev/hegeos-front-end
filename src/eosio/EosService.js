@@ -308,7 +308,7 @@ class EosService {
                 req.upper_bound = topKey;
             }
             EosService.getOptionTableRows(
-                'options',
+                process.env.REACT_APP_OPTIONS_TABLE,
                 req
             )
             .then(result => {
