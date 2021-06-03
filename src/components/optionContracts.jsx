@@ -16,6 +16,7 @@ function OptionContracts(props) {
     const [currentAllPage, setCurrentAllPage] = useState(1);
     const [optionsPerPage, setOptionsPerPage] = useState(10);
     const [loadChunkSize, setLoadChunkSize] = useState(20);
+    const [showExpired, setShowExpired] = useState(false);
 
     const onChunkRows = (result, prevRows, topKey) => {
         console.log('options result:', result);
@@ -77,6 +78,16 @@ function OptionContracts(props) {
         setCurrentAllPage(number);
     }
 
+    const onUserShowExpired = () => {
+        setShowExpired(!showExpired);
+        setCurrentUserPage(1);
+    }
+
+    const onAllShowExpired = () => {
+        setShowExpired(!showExpired);
+        setCurrentAllPage(1);
+    }
+
     const setTab = (k) => {
         userPaginate(1);
         allPaginate(1);
@@ -88,13 +99,23 @@ function OptionContracts(props) {
         return () => {};
     }, [props.refresh]);
 
+    const now = Date.now();
+
+    const showUserOptions = showExpired ? userOptions : userOptions.filter(option => {    
+        const expiration = Date.parse(option.expiration);
+        return !(expiration <= now);
+    });
     const indexOfLastUserOption = currentUserPage * optionsPerPage;
     const indexOfFirstUserOption = indexOfLastUserOption - optionsPerPage;
-    const currentUserOptions = userOptions.slice(indexOfFirstUserOption, indexOfLastUserOption);
+    const currentUserOptions = showUserOptions.slice(indexOfFirstUserOption, indexOfLastUserOption);
 
+    const showAllOptions = showExpired ? allOptions : allOptions.filter(option => {    
+        const expiration = Date.parse(option.expiration);
+        return !(expiration <= now);
+    });
     const indexOfLastAllOption = currentAllPage * optionsPerPage;
     const indexOfFirstAllOption = indexOfLastAllOption - optionsPerPage;
-    const currentAllOptions = allOptions.slice(indexOfFirstAllOption, indexOfLastAllOption);
+    const currentAllOptions = showAllOptions.slice(indexOfFirstAllOption, indexOfLastAllOption);
 
     return (
         <div className="liquidityPool boxStyle  p-4">
@@ -118,8 +139,8 @@ function OptionContracts(props) {
                             {currentUserOptions.map(option => {
                                 //console.log('option:', option);
                                 const expiration = Date.parse(option.expiration);
-                                //console.log('expiration:', expiration, 'now:', Date.now());
-                                const expired = expiration <= Date.now();                                
+                                //console.log('expiration:', expiration, 'now:', now);
+                                const expired = expiration <= now;
                                 const strikePrice = parseFloat(option.strike);
                                 //console.log('strikePrice:', strikePrice);
                                 //console.log('marketPrice:', props.marketPrice);
@@ -144,7 +165,7 @@ function OptionContracts(props) {
                                         </td>
                                     </tr>
                                 ]; 
-                                if (userOptionError.error && userOptionError.option_id === option.id) {
+                                if (userOptionError.error && userOptionError.option_id === option.id) {                                    
                                     rows.push(
                                         <tr>
                                             <td colspan="7"><div className="alert alert-danger">{userOptionError.error.toString()}</div></td>
@@ -157,8 +178,10 @@ function OptionContracts(props) {
                     </table>
                     <OptionsPagination 
                         optionsPerPage={optionsPerPage} 
-                        totalOptions={userOptions.length} 
+                        totalOptions={showUserOptions.length} 
                         paginate={userPaginate}
+                        showExpired={showExpired}
+                        onShowExpired={onUserShowExpired}
                         />
                 </Tab>
                 <Tab eventKey="all" title="All">
@@ -180,9 +203,9 @@ function OptionContracts(props) {
                                 //console.log('option:', option);
                                 const expiration = Date.parse(option.expiration);
                                 const expiration_1h = expiration - 3600000;
-                                //console.log('expiration:', expiration,  'expiration_1h:', expiration_1h, 'now:', Date.now());
-                                const expired = expiration <= Date.now();
-                                const expired_1h = expiration_1h <= Date.now();
+                                //console.log('expiration:', expiration,  'expiration_1h:', expiration_1h, 'now:', now);
+                                const expired = expiration <= now;
+                                const expired_1h = expiration_1h <= now;
                                 //if (expired_1h) console.log('expired_1h:', expired_1h);
                                 const strikePrice = parseFloat(option.strike);
                                 //console.log('strikePrice:', strikePrice);
@@ -224,8 +247,10 @@ function OptionContracts(props) {
                     </table>
                     <OptionsPagination 
                         optionsPerPage={optionsPerPage} 
-                        totalOptions={allOptions.length} 
+                        totalOptions={showAllOptions.length} 
                         paginate={allPaginate}
+                        showExpired={showExpired}
+                        onShowExpired={onAllShowExpired}
                         />
                 </Tab>
                 {/*(<Tab eventKey="history" title="History">
