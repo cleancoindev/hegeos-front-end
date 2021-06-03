@@ -38,7 +38,7 @@ export default function LiquidityPool(props) {
                 </div>
                 <div className="col-md-6">
                     Available Liquidity :<br />
-                    <h3>{availabilityMin + ' EOS / ' + availabilityMax + ' EOS'}</h3>
+                    <h3>{availabilityMin.toFixed(4) + ' EOS / ' + availabilityMax.toFixed(4) + ' EOS'}</h3>
                 </div>
                 <div className="col-md-12">
                     <div className="progress">

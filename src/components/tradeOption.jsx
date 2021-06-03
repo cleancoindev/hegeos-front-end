@@ -290,7 +290,7 @@ export default class TradeOption extends Component {
                 {this.props.isLoggedIn() && (
                     <div>
                         <div className="boxStyle p-4">
-                            <h2>BUY AN OPTION CONTRACT IN ONE MINUTE</h2>
+                            <h2>BUY AN OPTION CONTRACT</h2>
                             <hr />
                             <form className="row">
                                 <div className="col-md-12 mb-5">

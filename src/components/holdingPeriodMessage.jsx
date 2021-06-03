@@ -16,10 +16,10 @@ export default function HoldingPeriodMessage({ option, holdingPeriod, strikePric
             <animated.div style={divDescription}>
                 <div>
                     <p>
-                        If the price of underlying asset will rise higher than {breakEvenPrice} during 
-                        the next {days[holdingPeriod]} your option will expire worthless. If the 
-                        price of underlying asset will fall down lower than {breakEvenPrice} during the 
-                        next {days[holdingPeriod]} you will be able to exercise your option and take profits.
+                        If the price of underlying asset will fall down lower than {breakEvenPrice} during 
+                        the next {days[holdingPeriod]} you will be able to exercise your option and take profits. If the 
+                        price remains higher than {breakEvenPrice} during the 
+                        next {days[holdingPeriod]} your option will expire worthless.
                     </p>
                 </div>
             </animated.div>
@@ -29,10 +29,10 @@ export default function HoldingPeriodMessage({ option, holdingPeriod, strikePric
             <animated.div style={divDescription}>
                 <div>
                     <p>
-                        If the price of underlying asset will fall down lower than {breakEvenPrice} during 
-                        the next {days[holdingPeriod]} your option will expire worthless. If the 
-                        price of underlying asset will rise higher than {breakEvenPrice} during the 
-                        next {days[holdingPeriod]} you will be able to exercise your option and take profits.
+                        If the price of underlying asset will rise higher than {breakEvenPrice} during 
+                        the next {days[holdingPeriod]} you will be able to exercise your option and take profits. If the 
+                        price remains lower than {breakEvenPrice} during the 
+                        next {days[holdingPeriod]} your option will expire worthless.
                     </p>
                 </div>
             </animated.div>
