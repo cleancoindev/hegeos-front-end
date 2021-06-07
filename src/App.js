@@ -14,6 +14,7 @@ import FaqPage from './components/faqPage';
 import TokenHolders from './components/pages/tokenHolders';
 
 import { Anchor } from 'ual-anchor';
+import { Scatter } from 'ual-scatter';
 import { UALProvider, withUAL } from 'ual-reactjs-renderer';
 
 import PropTypes from 'prop-types';
@@ -169,7 +170,7 @@ class UALWrapper extends React.Component {
             // verifyProofs: false,
         });
         //const ledger = new Ledger([chain]);
-        //const scatter = new Scatter([chain], { appName: 'hegeos' });
+        const scatter = new Scatter([chain], { appName: 'hegeos' });
         return (
             <div>
                 <UALProvider
@@ -177,7 +178,7 @@ class UALWrapper extends React.Component {
                     authenticators={[
                       anchor, 
                       //ledger, 
-                      //scatter
+                      scatter,
                     ]}
                     chains={[chain]}
                     key={chain.chainId}

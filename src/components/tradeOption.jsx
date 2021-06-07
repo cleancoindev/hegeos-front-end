@@ -472,9 +472,7 @@ export default class TradeOption extends Component {
                 />
                 {this.props.mode !== 'home' && this.props.isLoggedIn() && (
                     <OptionContracts 
-                        marketPrice={
-                            cryptoCurrency.marketPrice
-                        }
+                        marketPrice={cryptoCurrency.marketPrice}
                         refresh={this.state.refreshOptionList} 
                         handleError={this.handleError} />
                 )}

@@ -134,20 +134,22 @@ class EosService {
         const rpc = new JsonRpc(process.env.REACT_APP_NODE_ENDPOINT);
         let actions = [];
         const actor = EosService.ualActiveUser ? EosService.ualActiveUser.accountName : localStorage.getItem('name_account');
-        const permission = EosService.ualActiveUser ? EosService.ualActiveUser.requestPermission : localStorage.getItem('account_permission');
+        const permission = (EosService.ualActiveUser ? EosService.ualActiveUser.requestPermission : localStorage.getItem('account_permission')) || process.env.REACT_APP_EOS_DEFAULT_PERMISSION;
+        const authorization = [{actor, permission}];
+        //debugger;
         if (transferData) {
             //console.log('transderData:', transferData);
             actions.push({
                 account: (transferContract || 'eosio.token'),
                 name: 'transfer',
-                authorization: [{actor, permission}],
+                authorization,
                 data: transferData
             });
         }
         actions.push({
             account: contractName,
             name: action,
-            authorization: [{actor, permission}],
+            authorization,
             data: dataValue
         });
         console.log('actions:', actions);
@@ -245,9 +247,9 @@ class EosService {
 
     static accountPermission() {
         if (EosService.ualActiveUser) {
-            return EosService.ualActiveUser.requestPermission;
+            return EosService.ualActiveUser.requestPermission || process.env.REACT_APP_EOS_DEFAULT_PERMISSION;
         }
-        return localStorage.getItem('account_permission');
+        return localStorage.getItem('account_permission') || process.env.REACT_APP_EOS_DEFAULT_PERMISSION;
     }
 
     static usdPrice() {
