@@ -15,6 +15,7 @@ import TokenHolders from './components/pages/tokenHolders';
 
 import { Anchor } from 'ual-anchor';
 import { Scatter } from 'ual-scatter';
+//import { TokenPocket } from 'ual-token-pocket';
 import { UALProvider, withUAL } from 'ual-reactjs-renderer';
 
 import PropTypes from 'prop-types';
@@ -171,6 +172,7 @@ class UALWrapper extends React.Component {
         });
         //const ledger = new Ledger([chain]);
         const scatter = new Scatter([chain], { appName: 'hegeos' });
+        //const tokenPocket = new TokenPocket([chain]);
         return (
             <div>
                 <UALProvider
@@ -179,6 +181,7 @@ class UALWrapper extends React.Component {
                       anchor, 
                       //ledger, 
                       scatter,
+                      //tokenPocket,
                     ]}
                     chains={[chain]}
                     key={chain.chainId}
