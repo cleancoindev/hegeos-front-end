@@ -3,6 +3,7 @@ import { Tabs, Tab } from 'react-bootstrap';
 //import Contracts from '../api/Contracts';
 import SelectCurrency from './selectCurrency';
 import OptionsPagination from './optionsPagination';
+import Crypto from '../api/Crypto';
 
 import EosService from '../eosio/EosService';
 
@@ -127,12 +128,13 @@ function OptionContracts(props) {
                         <thead>
                             <tr>
                                 <th scope="col">Id</th>
+                                <th scope="col">Type</th>
                                 <th scope="col">Strike</th>
                                 <th scope="col">Amount</th>
                                 <th scope="col">Premium</th>
                                 <th scope="col">Paid</th>
+                                <th scope="col">P&L</th>
                                 <th scope="col">Expiration</th>
-                                <th scope="col">Type</th>
                                 <th scope="col"></th>
                             </tr>
                         </thead>
@@ -147,15 +149,25 @@ function OptionContracts(props) {
                                 //console.log('marketPrice:', props.marketPrice);
                                 const priceTooLow = (option.optiontype === 0) && (props.marketPrice < strikePrice);
                                 const priceTooHigh = (option.optiontype === 1) && (props.marketPrice > strikePrice);
+                                let prempaidsym = option.prempaidsym;
+                                if (process.env.REACT_APP_TEST_MARKET_PRICE) {
+                                    prempaidsym = (parseFloat(option.premium.split(' ')[0]) * 6.2).toFixed(4) + ' USDC';
+                                }
+                                const paidcurrency = prempaidsym.split(' ')[1];
+                                const paidmp = Crypto.getMarketPrice(paidcurrency);
+                                const strike = parseFloat(option.strike);
+                                const amount = parseFloat(option.amount.split(' ')[0]);
+                                const profit = option.optiontype == '1' ? ((strike - paidmp) * amount) / paidmp : ((paidmp - strike) * amount) / paidmp;
                                 let rows = [
                                     <tr>
                                         <td>{option.id}</td>
-                                        <td>{parseFloat(option.strike).toFixed(4)}</td>
+                                        <td>{option.optiontype == '1' ? 'PUT' : 'CALL'}</td>
+                                        <td>{strike.toFixed(4)}</td>
                                         <td>{option.amount}</td>
                                         <td>{option.premium}</td>
-                                        <td>{option.prempaidsym}</td>
+                                        <td>{prempaidsym}</td>
+                                        <td>{profit.toFixed(4)}</td>
                                         <td>{option.expiration}</td>
-                                        <td>{option.optiontype == '1' ? 'PUT' : 'CALL'}</td>
                                         <td>
                                             {option.status === 'active' && !expired && !priceTooLow && !priceTooHigh && (
                                                 <SelectCurrency onSelectCurrency={({ type: currency }) => exercise(option.id, currency, setUserOptionError)} />
@@ -192,12 +204,12 @@ function OptionContracts(props) {
                             <tr>
                                 <th scope="col">Id</th>
                                 <th scope="col">Account</th>
+                                <th scope="col">Type</th>
                                 <th scope="col">Strike</th>
                                 <th scope="col">Amount</th>
                                 <th scope="col">Premium</th>
                                 <th scope="col">Paid</th>
                                 <th scope="col">Expiration</th>
-                                <th scope="col">Type</th>
                                 <th scope="col"></th>
                             </tr>
                         </thead>
@@ -215,16 +227,20 @@ function OptionContracts(props) {
                                 //console.log('marketPrice:', props.marketPrice);
                                 const priceTooLow = (option.optiontype === 0) && (props.marketPrice < strikePrice);
                                 const priceTooHigh = (option.optiontype === 1) && (props.marketPrice > strikePrice);
+                                let prempaidsym = option.prempaidsym;
+                                if (process.env.REACT_APP_TEST_MARKET_PRICE) {
+                                    prempaidsym = (parseFloat(option.premium.split(' ')[0]) * 6.2).toFixed(4) + ' USDC';
+                                }
                                 let rows = [
                                     <tr>
                                         <td>{option.id}</td>
                                         <td>{option.account}</td>
+                                        <td>{option.optiontype == '1' ? 'PUT' : 'CALL'}</td>
                                         <td>{parseFloat(option.strike).toFixed(4)}</td>
                                         <td>{option.amount}</td>
                                         <td>{option.premium}</td>
-                                        <td>{option.prempaidsym}</td>
+                                        <td>{prempaidsym}</td>
                                         <td>{option.expiration}</td>
-                                        <td>{option.optiontype == '1' ? 'PUT' : 'CALL'}</td>
                                         <td>
                                             {option.status === 'active' && !expired && !priceTooLow && !priceTooHigh && (
                                                 ((option.account === EosService.accountName() || expired_1h) && 

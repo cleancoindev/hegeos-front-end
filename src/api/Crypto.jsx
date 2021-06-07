@@ -44,10 +44,16 @@ const setMarketPrice = (currency, price) => {
     }
 }
 
+const getMarketPrice = (currency) => {
+    const i = cryptoCurrencies.findIndex(crypto => crypto.currency === currency);
+    return i !== -1 ? cryptoCurrencies[i].marketPrice : null;
+}
+
 const Crypto = {
     getCryptoCurrencies,
     getCryptoCurrency,
     setMarketPrice,
+    getMarketPrice
 };
 
 export default Crypto;
