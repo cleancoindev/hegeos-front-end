@@ -121,9 +121,10 @@ function Liquidity(props) {
         setErrors(errors || {});
         if (errors) return;
         const amount = parseFloat(withdrawAmount);
-        const maxburn = amount * currentRate;
-        console.log('withdraw amount:', amount, 'maxbirn:', maxburn);
-        EosService.poolWithdraw(amount.toFixed(4)+' EOS', maxburn.toFixed(4)+' '+process.env.REACT_APP_HEGEOS_SYMBOL)
+        //const maxburn = amount * currentRate;
+        console.log('withdraw amount:', amount/*, 'maxbirn:', maxburn*/);
+        //EosService.poolWithdraw(amount.toFixed(4)+' EOS', maxburn.toFixed(4)+' '+process.env.REACT_APP_HEGEOS_SYMBOL)
+        EosService.poolWithdraw(amount.toFixed(4)+' '+process.env.REACT_APP_HEGEOS_SYMBOL)
             .then(result => {
                 setErrors({});
                 setRefreshPool(!refreshPool);

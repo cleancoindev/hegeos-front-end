@@ -194,6 +194,10 @@ class EosService {
         }
     }
 
+    static async invokeTransferAction(transferData, transferContract) {
+        return EosService.invokeAction('transfer', (transferContract || 'eosio.token'), transferData);
+    }
+
     static async invokePoolAction(action, dataValue, transferData, transferContract) {
         return EosService.invokeAction(action, process.env.REACT_APP_POOL_CONTRACT_NAME, dataValue, transferData, transferContract);
     }
@@ -447,7 +451,7 @@ class EosService {
         return EosService.optionExercise(optionid, '4,EOS');
     }
 
-    static poolDeposit(amount, minmint) {
+    static poolDeposit(amount/*, minmint*/) {
         return new Promise((resolve, reject) => {
             const account = EosService.accountName();
             EosService.invokePoolAction(
@@ -455,7 +459,7 @@ class EosService {
                 {
                     account,
                     amount, 
-                    minmint
+                    //minmint,
                 },
                 {
                     from: account,
@@ -473,20 +477,31 @@ class EosService {
         });
     }
 
-    static poolWithdraw(amount, maxburn) {
+    static poolWithdraw(amount/*, maxburn*/) {
         return new Promise((resolve, reject) => {
             const account = EosService.accountName();
+/*
             EosService.invokePoolAction(
                 'withdraw',
                 {
                     account,
                     amount,
-                    maxburn
+                    maxburn,
                 },
                 {
                     from: account,
                     to: process.env.REACT_APP_POOL_CONTRACT_NAME,
                     quantity: maxburn,
+                    memo: ''
+                },
+                process.env.REACT_APP_LP_CONTRACT_NAME
+            )
+*/
+            EosService.invokeTransferAction(
+                {
+                    from: account,
+                    to: process.env.REACT_APP_POOL_CONTRACT_NAME,
+                    quantity: amount,
                     memo: ''
                 },
                 process.env.REACT_APP_LP_CONTRACT_NAME

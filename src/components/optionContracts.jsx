@@ -130,6 +130,7 @@ function OptionContracts(props) {
                                 <th scope="col">Strike</th>
                                 <th scope="col">Amount</th>
                                 <th scope="col">Premium</th>
+                                <th scope="col">Paid</th>
                                 <th scope="col">Expiration</th>
                                 <th scope="col">Type</th>
                                 <th scope="col"></th>
@@ -152,6 +153,7 @@ function OptionContracts(props) {
                                         <td>{parseFloat(option.strike).toFixed(4)}</td>
                                         <td>{option.amount}</td>
                                         <td>{option.premium}</td>
+                                        <td>{option.prempaidsym}</td>
                                         <td>{option.expiration}</td>
                                         <td>{option.optiontype == '1' ? 'PUT' : 'CALL'}</td>
                                         <td>
@@ -193,6 +195,7 @@ function OptionContracts(props) {
                                 <th scope="col">Strike</th>
                                 <th scope="col">Amount</th>
                                 <th scope="col">Premium</th>
+                                <th scope="col">Paid</th>
                                 <th scope="col">Expiration</th>
                                 <th scope="col">Type</th>
                                 <th scope="col"></th>
@@ -219,6 +222,7 @@ function OptionContracts(props) {
                                         <td>{parseFloat(option.strike).toFixed(4)}</td>
                                         <td>{option.amount}</td>
                                         <td>{option.premium}</td>
+                                        <td>{option.prempaidsym}</td>
                                         <td>{option.expiration}</td>
                                         <td>{option.optiontype == '1' ? 'PUT' : 'CALL'}</td>
                                         <td>
@@ -253,102 +257,6 @@ function OptionContracts(props) {
                         onShowExpired={onAllShowExpired}
                         />
                 </Tab>
-                {/*(<Tab eventKey="history" title="History">
-                    <table className="table table-dark">
-                        <thead>
-                            <tr>
-                                <th scope="col">Id</th>
-                                <th scope="col">Strike</th>
-                                <th scope="col">Amount</th>
-                                <th scope="col">Premium</th>
-                                <th scope="col">Expiration</th>
-                                <th scope="col">Type</th>
-                                <th scope="col"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {userOptions.filter(option => {
-                                return option.account === EosService.accountName() && option.status !== 'active'
-                            }).map(option => {
-                                return (<tr>
-                                        <td>{option.id}</td>
-                                        <td>{parseFloat(option.strike).toFixed(4)}</td>
-                                        <td>{option.amount}</td>
-                                        <td>{option.premium}</td>
-                                        <td>{option.expiration}</td>
-                                        <td>{option.optiontype}</td>
-                                        <td></td>
-                                    </tr>);
-                            })}
-                        </tbody>
-                    </table>
-                </Tab>)*/}
-                { /* 
-                (<Tab eventKey="active" title="Active">
-                    <table className="table table-dark">
-                        <thead>
-                            <tr>
-                                <th scope="col">Type</th>
-                                <th scope="col">Size</th>
-                                <th scope="col">Strike Price</th>
-                                <th scope="col">Price Now</th>
-                                <th scope="col">Break Even</th>
-                                <th scope="col">P&L</th>
-                                <th scope="col">Placed At</th>
-                                <th scope="col">Expires At</th>
-                                <th scope="col">Expires In</th>
-                                <th scope="col">Exercise</th>
-                                <th scope="col">Share</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {Contracts.getActiveContracts().map((contact) => (
-                                <tr>
-                                    <td>{contact.optionType}</td>
-                                    <td>{contact.optionSize}</td>
-                                    <td>{contact.strikePrice}</td>
-                                    <td>{contact.priceNow}</td>
-                                    <td>{contact.breakEven}</td>
-                                    <td>{contact.plRealized}</td>
-                                    <td>{contact.placedAt}</td>
-                                    <td>{contact.expiresAt}</td>
-                                    <td>{contact.expiresIn}</td>
-                                    <td>{contact.exercise}</td>
-                                    <td>{contact.share}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </Tab>
-                <Tab eventKey="history" title="History">
-                    <table className="table table-dark">
-                        <thead>
-                            <tr>
-                                <th scope="col">Type</th>
-                                <th scope="col">Size</th>
-                                <th scope="col">Strike Price</th>
-                                <th scope="col">Placed At</th>
-                                <th scope="col">Expires At</th>
-                                <th scope="col">P&L Realized</th>
-                                <th scope="col">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {Contracts.getActiveContracts().map((contact) => (
-                                <tr>
-                                    <td>{contact.optionType}</td>
-                                    <td>{contact.optionSize}</td>
-                                    <td>{contact.strikePrice}</td>
-                                    <td>{contact.placedAt}</td>
-                                    <td>{contact.plRealized}</td>
-                                    <td>{contact.expiresAt}</td>
-                                    <td>{contact.status}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>{' '}
-                </Tab>) 
-                */ }
             </Tabs>
         </div>
     );
