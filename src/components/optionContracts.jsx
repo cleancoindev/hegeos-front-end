@@ -209,6 +209,7 @@ function OptionContracts(props) {
                                 <th scope="col">Amount</th>
                                 <th scope="col">Premium</th>
                                 <th scope="col">Paid</th>
+                                <th scope="col">P&L</th>
                                 <th scope="col">Expiration</th>
                                 <th scope="col"></th>
                             </tr>
@@ -231,15 +232,21 @@ function OptionContracts(props) {
                                 if (process.env.REACT_APP_TEST_MARKET_PRICE) {
                                     prempaidsym = (parseFloat(option.premium.split(' ')[0]) * 6.2).toFixed(4) + ' USDC';
                                 }
+                                const paidcurrency = prempaidsym.split(' ')[1];
+                                const paidmp = Crypto.getMarketPrice(paidcurrency);
+                                const strike = parseFloat(option.strike);
+                                const amount = parseFloat(option.amount.split(' ')[0]);
+                                const profit = option.optiontype == '1' ? ((strike - paidmp) * amount) : ((paidmp - strike) * amount);
                                 let rows = [
                                     <tr>
                                         <td>{option.id}</td>
                                         <td>{option.account}</td>
                                         <td>{option.optiontype == '1' ? 'PUT' : 'CALL'}</td>
-                                        <td>{parseFloat(option.strike).toFixed(4)}</td>
+                                        <td>{strike.toFixed(4)}</td>
                                         <td>{option.amount}</td>
                                         <td>{option.premium}</td>
                                         <td>{prempaidsym}</td>
+                                        <td>{profit.toFixed(4)} {paidcurrency}</td>
                                         <td>{option.expiration}</td>
                                         <td>
                                             {option.status === 'active' && !expired && !priceTooLow && !priceTooHigh && (
