@@ -270,8 +270,8 @@ function Liquidity(props) {
                             expiration. When a writer wishes to receive their {liquidityData.currency}{' '}
                             back, he should call the Withdraw function of the contract and burn {process.env.REACT_APP_HEGEOS_SYMBOL}
                             tokens. {liquidityData.currency} will be sent to the writer’s{' '}
-                            address. Attention: do not send {process.env.REACT_APP_HEGEOS_SYMBOL} tokens to the
-                            contract address because you will lose your funds.
+                            address.<br/>
+                            Attention: Your EOS will be locked for 14 days upon depositing, and resets lock counter on each additional deposit.
                         </div>
                         <div className="row">
                             <div className="col-sm-4">
