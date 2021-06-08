@@ -157,7 +157,7 @@ function OptionContracts(props) {
                                 const paidmp = Crypto.getMarketPrice(paidcurrency);
                                 const strike = parseFloat(option.strike);
                                 const amount = parseFloat(option.amount.split(' ')[0]);
-                                const profit = option.optiontype == '1' ? ((strike - paidmp) * amount) / paidmp : ((paidmp - strike) * amount) / paidmp;
+                                const profit = option.optiontype == '1' ? ((strike - paidmp) * amount) : ((paidmp - strike) * amount);
                                 let rows = [
                                     <tr>
                                         <td>{option.id}</td>
@@ -166,7 +166,7 @@ function OptionContracts(props) {
                                         <td>{option.amount}</td>
                                         <td>{option.premium}</td>
                                         <td>{prempaidsym}</td>
-                                        <td>{profit.toFixed(4)}</td>
+                                        <td>{profit.toFixed(4)} {paidcurrency}</td>
                                         <td>{option.expiration}</td>
                                         <td>
                                             {option.status === 'active' && !expired && !priceTooLow && !priceTooHigh && (

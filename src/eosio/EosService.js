@@ -233,7 +233,7 @@ class EosService {
         }
         return
             localStorage.getItem('private_key') && 
-            localStorage.getItem('account_permission') &&
+            //localStorage.getItem('account_permission') &&
             localStorage.getItem('name_account');
     }
 
