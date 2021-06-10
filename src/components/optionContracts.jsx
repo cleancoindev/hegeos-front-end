@@ -129,12 +129,16 @@ function OptionContracts(props) {
     function formatExpiration(expiration) {
         const d = new Date(expiration);
         //return d.toISOString();
-        return d.getUTCFullYear().toString() + '-' +
+        let s = d.getUTCFullYear().toString() + '-' +
             pad(d.getUTCMonth() + 1, 2) + '-' +
             pad(d.getUTCDate(), 2) + ' ' +
             pad(d.getUTCHours(), 2) + ':' +
-            pad(d.getUTCMinutes(), 2) + ':' +
-            pad(d.getUTCSeconds(), 2);
+            pad(d.getUTCMinutes(), 2);
+        const nsec = d.getUTCSeconds();
+        if (nsec) {
+            s += ':' + pad(nsec, 2);
+        }
+        return s;
     }
 
     return (
