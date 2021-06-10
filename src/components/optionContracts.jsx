@@ -118,6 +118,25 @@ function OptionContracts(props) {
     const indexOfFirstAllOption = indexOfLastAllOption - optionsPerPage;
     const currentAllOptions = showAllOptions.slice(indexOfFirstAllOption, indexOfLastAllOption);
 
+    function pad(number, length) {
+        let str = '' + number;
+        while (str.length < length) {
+            str = '0' + str;
+        }
+        return str;
+    }
+
+    function formatExpiration(expiration) {
+        const d = new Date(expiration);
+        //return d.toISOString();
+        return d.getUTCFullYear().toString() + '-' +
+            pad(d.getUTCMonth() + 1, 2) + '-' +
+            pad(d.getUTCDate(), 2) + ' ' +
+            pad(d.getUTCHours(), 2) + ':' +
+            pad(d.getUTCMinutes(), 2) + ':' +
+            pad(d.getUTCSeconds(), 2);
+    }
+
     return (
         <div className="liquidityPool boxStyle  p-4">
             <h2>OPTIONS CONTRACTS</h2>
@@ -167,7 +186,7 @@ function OptionContracts(props) {
                                         <td>{option.premium}</td>
                                         <td>{prempaidsym}</td>
                                         <td>{profit.toFixed(4)} {paidcurrency}</td>
-                                        <td>{option.expiration}</td>
+                                        <td>{formatExpiration(expiration)}</td>
                                         <td>
                                             {option.status === 'active' && !expired && !priceTooLow && !priceTooHigh && (
                                                 <SelectCurrency onSelectCurrency={({ type: currency }) => exercise(option.id, currency, setUserOptionError)} />
@@ -247,7 +266,7 @@ function OptionContracts(props) {
                                         <td>{option.premium}</td>
                                         <td>{prempaidsym}</td>
                                         <td>{profit.toFixed(4)} {paidcurrency}</td>
-                                        <td>{option.expiration}</td>
+                                        <td>{formatExpiration(expiration)}</td>
                                         <td>
                                             {option.status === 'active' && !expired && !priceTooLow && !priceTooHigh && (
                                                 ((option.account === EosService.accountName() || expired_1h) && 
