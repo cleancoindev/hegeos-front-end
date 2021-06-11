@@ -127,14 +127,15 @@ function OptionContracts(props) {
     }
 
     function formatExpiration(expiration) {
-        const d = new Date(expiration);
+        const ud = new Date(expiration);
+        const d =  new Date(ud.getTime() - ud.getTimezoneOffset() * 60 * 1000);
         //return d.toISOString();
-        let s = d.getUTCFullYear().toString() + '-' +
-            pad(d.getUTCMonth() + 1, 2) + '-' +
-            pad(d.getUTCDate(), 2) + ' ' +
-            pad(d.getUTCHours(), 2) + ':' +
-            pad(d.getUTCMinutes(), 2);
-        const nsec = d.getUTCSeconds();
+        let s = d.getFullYear().toString() + '-' +
+            pad(d.getMonth() + 1, 2) + '-' +
+            pad(d.getDate(), 2) + ' ' +
+            pad(d.getHours(), 2) + ':' +
+            pad(d.getMinutes(), 2);
+        const nsec = d.getSeconds();
         if (nsec) {
             s += ':' + pad(nsec, 2);
         }
