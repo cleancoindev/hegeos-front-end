@@ -20,7 +20,7 @@ function OptionContracts(props) {
     const [showExpired, setShowExpired] = useState(false);
 
     const onChunkRows = (result, prevRows, topKey) => {
-        console.log('options result:', result);
+        //console.log('options result:', result);
         const rows = prevRows.concat(result.rows);
         if (result.more) {
             const nextKey = parseInt(result.next_key);
