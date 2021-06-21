@@ -179,6 +179,7 @@ a.nav-link:hover {
     padding-top: 55px;
     padding-bottom: 55px;
     position: relative;
+    text-align: center;
 }
 .banefits-color-2 {
     position: absolute;
@@ -277,4 +278,11 @@ a:hover {
     color: #fff;
     background-color: #052527;
     border-color: #fff;
+}
+
+#root > div > main > div > div.jumbotron > div > div:nth-child(2) > img {
+    width: 100%;
+}
+.hegeos-color img {
+    width: 100%;
 }

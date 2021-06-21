@@ -6,15 +6,14 @@ export default function Jumbotron(props) {
     return (
         <div className="jumbotron">
             <div className="row">
-                <div className="col text-center pt-5">
+                <div className="col-md-6 text-center pt-5">
                     {' '}
                     <h2 className="display-5 text-center pt-5">
                         <strong>THE SIMPLEST OPTIONS TRADING EXPERIENCE</strong>
                     </h2>
                     <p className="lead text-center">
-                        Trade non-custodial options for profits or to hedge your positions. Enjoy
-                        fixed price and unlimited upside of the options contracts. No registration,
-                        KYC or email required.
+                        Trade non-custodial options for profits or to hedge your positions. Enjoy fixed price and
+                        unlimited upside of the options contracts. No registration, KYC or email required.
                     </p>
                     <hr className="my-4" />
                     <p>Get Started now and connect your wallet.</p>
@@ -27,7 +26,7 @@ export default function Jumbotron(props) {
                         />
                     </p>
                 </div>
-                <div className="col">
+                <div className="col-md-6">
                     <img src={banner} alt="" />
                 </div>
             </div>
