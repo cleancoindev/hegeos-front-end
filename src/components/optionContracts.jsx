@@ -191,7 +191,7 @@ function OptionContracts(props) {
                                         <td>{option.amount}</td>
                                         <td>{option.premium}</td>
                                         <td>{prempaidsym}</td>
-                                        <td>{profit.toFixed(4)} {paidcurrency}</td>
+                                        {profit >= 0 ? (<td>{profit.toFixed(4)} {paidcurrency}</td>) : (<td className='text-danger'>LOSS</td>)}
                                         <td>{formatExpiration(expiration)}</td>
                                         <td>
                                             {option.status === 'active' && !expired && !priceTooLow && !priceTooHigh && (
@@ -272,7 +272,7 @@ function OptionContracts(props) {
                                         <td>{option.amount}</td>
                                         <td>{option.premium}</td>
                                         <td>{prempaidsym}</td>
-                                        <td>{profit.toFixed(4)} {paidcurrency}</td>
+                                        {profit >= 0 ? (<td>{profit.toFixed(4)} {paidcurrency}</td>) : (<td className='text-danger'>LOSS</td>)}
                                         <td>{formatExpiration(expiration)}</td>
                                         <td>
                                             {option.status === 'active' && !expired && !priceTooLow && !priceTooHigh && (
