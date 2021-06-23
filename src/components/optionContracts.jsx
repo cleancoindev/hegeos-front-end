@@ -177,11 +177,12 @@ function OptionContracts(props) {
                                 if (process.env.REACT_APP_TEST_MARKET_PRICE) {
                                     prempaidsym = (parseFloat(option.premium.split(' ')[0]) * 6.2).toFixed(4) + ' USDC';
                                 }
+                                const prempaid = parseFloat(prempaidsym.split(' ')[0]);
                                 const paidcurrency = prempaidsym.split(' ')[1];
                                 const paidmp = Crypto.getMarketPrice(paidcurrency);
                                 const strike = parseFloat(option.strike);
                                 const amount = parseFloat(option.amount.split(' ')[0]);
-                                const profit = option.optiontype == '1' ? ((strike - paidmp) * amount) : ((paidmp - strike) * amount);
+                                const profit = option.optiontype == '1' ? ((strike - paidmp) * amount) - prempaid : ((paidmp - strike) * amount) - prempaid;
                                 let rows = [
                                     <tr>
                                         <td>{option.id}</td>
@@ -256,11 +257,12 @@ function OptionContracts(props) {
                                 if (process.env.REACT_APP_TEST_MARKET_PRICE) {
                                     prempaidsym = (parseFloat(option.premium.split(' ')[0]) * 6.2).toFixed(4) + ' USDC';
                                 }
+                                const prempaid = parseFloat(prempaidsym.split(' ')[0]);
                                 const paidcurrency = prempaidsym.split(' ')[1];
                                 const paidmp = Crypto.getMarketPrice(paidcurrency);
                                 const strike = parseFloat(option.strike);
                                 const amount = parseFloat(option.amount.split(' ')[0]);
-                                const profit = option.optiontype == '1' ? ((strike - paidmp) * amount) : ((paidmp - strike) * amount);
+                                const profit = option.optiontype == '1' ? ((strike - paidmp) * amount) - prempaid : ((paidmp - strike) * amount) - prempaid;
                                 let rows = [
                                     <tr>
                                         <td>{option.id}</td>
