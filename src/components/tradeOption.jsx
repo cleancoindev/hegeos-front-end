@@ -30,6 +30,7 @@ export default class TradeOption extends Component {
         // get the crypto current rates
         cryptoCurrency: Crypto.getCryptoCurrency('USDC'),
         impliedVolRate: 45.5,
+        discount: 0,
         // form error messages goes here
         errors: {},
         // hold the component state to reanimate in react-spring
@@ -67,6 +68,7 @@ export default class TradeOption extends Component {
         this.getMarketPrice();
         //this.getCurrencyBalance();
         this.getImpliedVolRate();
+        this.getDiscount();
     }
 
     componentDidMount() {
@@ -78,6 +80,7 @@ export default class TradeOption extends Component {
         this.getMarketPrice();
         //this.getCurrencyBalance();
         this.getImpliedVolRate();
+        this.getDiscount();
 
         this.updateInterval = setInterval(this.updateTick, 5000); //update every 5 seconds
     }
@@ -128,6 +131,19 @@ export default class TradeOption extends Component {
             this.handleError);
     }
 
+    getDiscount() {
+        EosService.optionDiscount()
+            .then(result => {
+                const discount = result.rows && result.rows[0] && result.rows[0].discount;
+                if (typeof discount === 'number') {
+                    let currentState = { ...this.state };
+                    currentState.discount = discount;
+                    this.updateState(currentState);
+                }
+            },
+            this.handleError);
+    }
+
     validate = () => {
         const options = { abortEarly: false };
         const { error } = Joi.validate(this.state.tradeOption, this.schema(), options);
@@ -155,6 +171,7 @@ export default class TradeOption extends Component {
 //                : currentState.cryptoCurrency.strikeRate;
         //const fldStrikeRate = currentState.cryptoCurrency.strikeRate;
         const fldImpliedVolRate = currentState.impliedVolRate;
+        const fldDiscount = currentState.discount;
         const fldHoldingPeriod = parseFloat(currentState.tradeOption.holdingPeriod);
 
         currentState.graphData.totalCost = TradingOption.getTotalCost(
@@ -165,7 +182,7 @@ export default class TradeOption extends Component {
             //fldStrikeRate,
             fldImpliedVolRate,
             fldHoldingPeriod,
-            fldHoldingPeriod,
+            fldDiscount,
         );
 
         currentState.graphData.breakEvenPrice = TradingOption.getBreakEven(
@@ -176,7 +193,7 @@ export default class TradeOption extends Component {
             //fldStrikeRate,
             fldImpliedVolRate,
             fldHoldingPeriod,
-            fldHoldingPeriod,
+            fldDiscount,
         );
 
         this.setState(currentState);

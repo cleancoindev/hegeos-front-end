@@ -304,6 +304,23 @@ class EosService {
         });
     }
 
+    static optionDiscount() {
+        return new Promise((resolve, reject) => {
+            EosService.getOptionTableRows(
+                process.env.REACT_APP_OPTION_DISCOUNT_TABLE,
+                {
+                    limit: 1
+                }
+            )
+            .then(result => {
+                resolve(result);
+            })
+            .catch(err => {
+                reject(err);
+            });  
+        });
+    }
+
     static optionList(limit, topKey) {
         return new Promise((resolve, reject) => {
             let req = {

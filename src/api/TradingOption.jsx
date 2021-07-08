@@ -10,12 +10,14 @@ const getSettlementFee = (optionSize) => {
   return optionSize * 0.01;
 };
 
-const getPutPeriodFee = (optionSize, holdingPeriod, strikePrice, impliedVolRate, marketPrice) => {
-  return (optionSize * Math.sqrt(holdingPeriod) * impliedVolRate * strikePrice) / marketPrice;
+const getPutPeriodFee = (optionSize, holdingPeriod, strikePrice, impliedVolRate, marketPrice, discount) => {
+  const coeff = discount ? (100-discount) / 100 : 1;
+  return (optionSize * Math.sqrt(holdingPeriod) * impliedVolRate * coeff * strikePrice) / marketPrice;
 };
 
-const getCallPeriodFee = (optionSize, holdingPeriod, strikePrice, impliedVolRate, marketPrice) => {
-  return (optionSize * Math.sqrt(holdingPeriod) * impliedVolRate * marketPrice) / strikePrice;
+const getCallPeriodFee = (optionSize, holdingPeriod, strikePrice, impliedVolRate, marketPrice, discount) => {
+  const coeff = discount ? (100-discount) / 100 : 1;
+  return (optionSize * Math.sqrt(holdingPeriod) * impliedVolRate * coeff * marketPrice) / strikePrice;
 };
 
 const getStrikeFee = (option, marketPrice, strikeRate, optionSize) => {
@@ -34,15 +36,17 @@ const getTotalCost = (
   //strikeRate,
   impliedVolRate,
   holdingPeriod,
+  discount,
 ) => {
   console.log('option:', option);
   console.log('optionSize:', optionSize);
   console.log('marketPrice:', marketPrice);
   console.log('strikePrice:', strikePrice);
-  console.log('impliedVolRate:', impliedVolRate);
+  console.log('impliedVolRate:', impliedVolRate);  
   console.log('holdingPeriod:', holdingPeriod);
+  console.log('discount: ', discount);
   if (option === 'PUT') {
-    const periodFee = getPutPeriodFee(optionSize, holdingPeriod, strikePrice, impliedVolRate, marketPrice);
+    const periodFee = getPutPeriodFee(optionSize, holdingPeriod, strikePrice, impliedVolRate, marketPrice, discount);
     const strikeFee = getStrikeFee(option, marketPrice, strikePrice /* strikeRate */, optionSize);
     const settlementFee = getSettlementFee(optionSize);
     const totalFee = (periodFee + strikeFee + settlementFee) * 1.05 * marketPrice; // +5%
@@ -52,7 +56,7 @@ const getTotalCost = (
     console.log('totalFee:', totalFee);
     return totalFee;
   } else if (option === 'CALL') {
-    const periodFee = getCallPeriodFee(optionSize, holdingPeriod, strikePrice, impliedVolRate, marketPrice);
+    const periodFee = getCallPeriodFee(optionSize, holdingPeriod, strikePrice, impliedVolRate, marketPrice, discount);
     const strikeFee = getStrikeFee(option, marketPrice, strikePrice /* strikeRate */, optionSize);
     const settlementFee = getSettlementFee(optionSize);
     const totalFee = (periodFee + strikeFee + settlementFee) * 1.05 * marketPrice; // +5%
@@ -72,6 +76,7 @@ const getBreakEven = (
   //strikeRate,
   impliedVolRate,
   holdingPeriod,
+  discount,
 ) => {
   if (option === 'CALL') {
     return Math.abs(
@@ -84,6 +89,7 @@ const getBreakEven = (
           //strikeRate,
           impliedVolRate,
           holdingPeriod,
+          discount,
         ),
     );
   } else if (option === 'PUT') {
@@ -97,6 +103,7 @@ const getBreakEven = (
           //strikeRate,
           impliedVolRate,
           holdingPeriod,
+          discount,
         ),
     );
   }
