@@ -103,11 +103,11 @@ export default class TradeOption extends Component {
             }
             EosService.usdPrice()
                 .then(price => {
-                    //console.log('price:', price);
-                    if (currentCurrency === 'USDC' && price.usdc) {
+                    console.log('price:', price);
+                    if (price.usdc) {
                         Crypto.setMarketPrice('USDC', price.usdc);
                     }
-                    if (currentCurrency === 'DAI' && price.dai) {
+                    if (price.dai) {
                         Crypto.setMarketPrice('DAI', price.dai);
                     }
                     let currentState = { ...this.state };
