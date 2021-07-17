@@ -100,10 +100,9 @@ function OptionContracts(props) {
         return () => {};
     }, [props.refresh]);
 
-    const now = Date.now();
-
     const showUserOptions = showExpired ? userOptions : userOptions.filter(option => {    
         const expiration = Date.parse(option.expiration);
+        const now = Date.now();
         return !(expiration <= now);
     });
     const indexOfLastUserOption = currentUserPage * optionsPerPage;
@@ -112,6 +111,7 @@ function OptionContracts(props) {
 
     const showAllOptions = showExpired ? allOptions : allOptions.filter(option => {    
         const expiration = Date.parse(option.expiration);
+        const now = Date.now();
         return !(expiration <= now);
     });
     const indexOfLastAllOption = currentAllPage * optionsPerPage;
@@ -166,6 +166,7 @@ function OptionContracts(props) {
                             {currentUserOptions.map(option => {
                                 //console.log('option:', option);
                                 const expiration = Date.parse(option.expiration);
+                                const now = Date.now();
                                 //console.log('expiration:', expiration, 'now:', now);
                                 const expired = expiration <= now;
                                 const strikePrice = parseFloat(option.strike);
@@ -222,6 +223,7 @@ function OptionContracts(props) {
                         paginate={userPaginate}
                         showExpired={showExpired}
                         onShowExpired={onUserShowExpired}
+                        currentTime={Date.now()}
                         />
                 </Tab>
                 <Tab eventKey="all" title="All">
@@ -245,6 +247,7 @@ function OptionContracts(props) {
                                 //console.log('option:', option);
                                 const expiration = Date.parse(option.expiration);
                                 const expiration_1h = expiration - 3600000;
+                                const now = Date.now();
                                 //console.log('expiration:', expiration,  'expiration_1h:', expiration_1h, 'now:', now);
                                 const expired = expiration <= now;
                                 const expired_1h = expiration_1h <= now;
@@ -306,6 +309,7 @@ function OptionContracts(props) {
                         paginate={allPaginate}
                         showExpired={showExpired}
                         onShowExpired={onAllShowExpired}
+                        currentTime={Date.now()}
                         />
                 </Tab>
             </Tabs>
