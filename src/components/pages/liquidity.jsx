@@ -381,7 +381,7 @@ function Liquidity(props) {
                                 </a>
                                 {errors.withdraw && <div className="alert alert-danger mt-4">{errors.withdraw}</div>}
                                 <p className="small pt-4">
-                                    Click the "Withdraw" button and {withdrawAmount} {liquidityData.currency}{' '}
+                                    Click the "Withdraw" button and {(withdrawAmount / (currentRate || 1)).toFixed(2)} {liquidityData.currency}{' '}
                                     will be sent to your {liquidityData.currency} address.
                                 </p>
                             </div>
