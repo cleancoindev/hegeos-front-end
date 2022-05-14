@@ -8,7 +8,7 @@
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^12.8.3",
     "bootstrap": "^5.0.0",
-    "chart.js": "^3.2.1",
+    "chart.js": "^3.7.1",
     "eosio-signing-request": "^2.2.1",
     "eosjs": "^21.0.4",
     "joi-browser": "^13.4.0",
