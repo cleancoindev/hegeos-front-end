@@ -21,7 +21,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "react-spring": "^9.1.2",
-    "sass": "^1.32.12",
+    "sass": "^1.50.1",
     "ual-anchor": "^1.0.6",
     "ual-ledger": "^0.3.0",
     "ual-reactjs-renderer": "^0.3.1",
